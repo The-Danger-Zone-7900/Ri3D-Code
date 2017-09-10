@@ -34,7 +34,9 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 
-import org.firstinspires.ftc.teamcode.Subsystems.SampleSubsystem;
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.ElevatorLift;
+import org.firstinspires.ftc.teamcode.Subsystems.Intakes;
 import org.firstinspires.ftc.teamcode.ToolClasses.Controls;
 
 
@@ -44,7 +46,10 @@ public class TeleOp extends OpMode{
     /* Declare OpMode members. */
     Robot robot = new Robot(hardwareMap);
     Controls controls = new Controls();
-    SampleSubsystem sampleSubsystem = new SampleSubsystem(hardwareMap);
+    DriveTrain drive = new DriveTrain(hardwareMap);
+    Intakes intakes = new Intakes(hardwareMap);
+    ElevatorLift elevatorLift = new ElevatorLift(hardwareMap);
+
 
 
 
@@ -54,8 +59,7 @@ public class TeleOp extends OpMode{
         telemetry.addData("Say", "Initializing");
 
         //Put init functions here
-
-        sampleSubsystem.init(false);
+        drive.init();
 
         telemetry.addData("Say", "Initializing Complete");
 
@@ -85,8 +89,11 @@ public class TeleOp extends OpMode{
     @Override
     public void loop() {
 
-        sampleSubsystem.runMotorSpeed(controls.motorPower());
-
+        drive.mechDrive(controls.strafe(), controls.forward(), controls.rotation());
+        intakes.turnCube(controls.turnCubeLeft(), controls.turnCubeRight());
+        intakes.intake(controls.intakeIn(), controls.intakeOut());
+        elevatorLift.liftManual(controls.manualLift());
+        elevatorLift.liftPositions(controls.liftUp(), controls.liftDown());
     }
 
     /*

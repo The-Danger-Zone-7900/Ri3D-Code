@@ -34,7 +34,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 
-import org.firstinspires.ftc.teamcode.Subsystems.SampleSubsystem;
 import org.firstinspires.ftc.teamcode.ToolClasses.Constants;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Sample Auto")
@@ -42,14 +41,12 @@ public class Autonomous extends LinearOpMode {
 
     /* Declare OpMode members. */
     Robot robot = new Robot(hardwareMap);
-    SampleSubsystem sampleSubsystem = new SampleSubsystem(hardwareMap);
 
     @Override
     public void runOpMode(){
 
         //Initialization Stuff Goes Here.
 
-        sampleSubsystem.init(true);
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
@@ -57,8 +54,6 @@ public class Autonomous extends LinearOpMode {
         //Actual Autonomous Code Goes Here
 
             //Turn Motor 90 Degrees assuming encoder exists
-        sampleSubsystem.runMotorPosition(Constants.motorRunningPosition);
-
 
 
     }
