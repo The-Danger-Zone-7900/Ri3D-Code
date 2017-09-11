@@ -10,9 +10,15 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class Controls{
 
-    public Gamepad gamepad1 = null;
-    public Gamepad gamepad2 = null;
+    public Gamepad gamepad1;
+    public Gamepad gamepad2;
 
+    public Controls(Gamepad g1, Gamepad g2){
+
+        Gamepad gamepad1 = g1;
+        Gamepad gamepad2 = g2;
+
+    }
     //Pxxx = Primary xxx
     //Sxxx = Secondary xxx
 

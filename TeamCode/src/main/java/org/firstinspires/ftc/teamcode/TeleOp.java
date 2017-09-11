@@ -45,7 +45,7 @@ public class TeleOp extends OpMode{
 
     /* Declare OpMode members. */
     Robot robot = new Robot(hardwareMap);
-    Controls controls = new Controls();
+    Controls controls = new Controls(gamepad1, gamepad2);
     DriveTrain drive = new DriveTrain(hardwareMap);
     Intakes intakes = new Intakes(hardwareMap);
     ElevatorLift elevatorLift = new ElevatorLift(hardwareMap);
