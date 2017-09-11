@@ -40,6 +40,8 @@ public class ElevatorLift extends Subsystem{
 
         public synchronized void liftPositions(boolean up, boolean down) {
             if (!manualOverride) {
+                    
+                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
                 if (up) {
 
@@ -52,7 +54,7 @@ public class ElevatorLift extends Subsystem{
                 }
 
                 liftMotor.setTargetPosition(positions[selectedPos]);
-
+                liftMotor.setPower(.75);
 
             }
         }
@@ -60,7 +62,8 @@ public class ElevatorLift extends Subsystem{
         public synchronized void liftManual(double amount){
 
             if(-.1 > amount && .1 < amount){
-
+                    
+                liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
                 liftMotor.setPower(amount);
                 manualOverride = true;
 
