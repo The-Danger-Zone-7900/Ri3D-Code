@@ -32,6 +32,8 @@ public class DriveTrain extends Subsystem{
             lbMotor = hwMap.dcMotor.get(ActuatorMap.lbMotor);
             rfMotor = hwMap.dcMotor.get(ActuatorMap.rfMotor);
             rbMotor = hwMap.dcMotor.get(ActuatorMap.rbMotor);
+            rbMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            rfMotor.setDirection(DcMotorSimple.Direction.REVERSE);
 
 
         }
