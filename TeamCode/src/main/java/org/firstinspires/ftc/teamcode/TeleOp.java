@@ -33,7 +33,6 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
-
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.ElevatorLift;
 import org.firstinspires.ftc.teamcode.Subsystems.Intakes;
@@ -45,10 +44,10 @@ public class TeleOp extends OpMode{
 
     /* Declare OpMode members. */
     Robot robot = new Robot(hardwareMap);
-    Controls controls = new Controls(gamepad1, gamepad2);
-    DriveTrain drive = new DriveTrain(hardwareMap);
-    Intakes intakes = new Intakes(hardwareMap);
-    ElevatorLift elevatorLift = new ElevatorLift(hardwareMap);
+    private Controls controls = new Controls(gamepad1, gamepad2);
+    private DriveTrain drive = new DriveTrain(hardwareMap);
+    private Intakes intakes = new Intakes(hardwareMap);
+    private ElevatorLift elevatorLift = new ElevatorLift(hardwareMap);
 
 
 
@@ -94,6 +93,9 @@ public class TeleOp extends OpMode{
         intakes.intake(controls.intakeIn(), controls.intakeOut());
         elevatorLift.liftManual(controls.manualLift());
         elevatorLift.liftPositions(controls.liftUp(), controls.liftDown());
+        telemetry.addData("Stick", controls.forward());
+
+        robot.waitForTick(10);
     }
 
     /*

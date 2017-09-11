@@ -6,22 +6,17 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.ToolClasses.ActuatorMap;
 import org.firstinspires.ftc.teamcode.ToolClasses.MathHandler;
 
-/**
- * Created by maxcr1 on 9/9/17.
- */
-
 public class DriveTrain extends Subsystem{
 
 
         //Define Actuators as null
-        static DcMotor lfMotor;
-        static DcMotor lbMotor;
-        static DcMotor rfMotor;
-        static DcMotor rbMotor;
+        private static DcMotor lfMotor;
+        private static DcMotor lbMotor;
+        private static DcMotor rfMotor;
+        private static DcMotor rbMotor;
         //Define variables
 
-        double motorInputs[];
-        //Constructor (put init things in here)
+    //Constructor (put init things in here)
 
         public DriveTrain(HardwareMap ahwMap){
             //This is static
@@ -32,20 +27,20 @@ public class DriveTrain extends Subsystem{
             lbMotor = hwMap.dcMotor.get(ActuatorMap.lbMotor);
             rfMotor = hwMap.dcMotor.get(ActuatorMap.rfMotor);
             rbMotor = hwMap.dcMotor.get(ActuatorMap.rbMotor);
-            rbMotor.setDirection(DcMotorSimple.Direction.REVERSE);
-            rfMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+            rbMotor.setDirection(DcMotor.Direction.REVERSE);
+            rfMotor.setDirection(DcMotor.Direction.REVERSE);
 
 
         }
 
-        public static void init(){
+        public synchronized void init(){
 
 
 
         }
 
         public synchronized void mechDrive(double strafe, double forward, double rotation){
-            motorInputs = MathHandler.mechanumDrive(strafe, forward, rotation);
+            double[] motorInputs = MathHandler.mechanumDrive(strafe, forward, rotation);
             lfMotor.setPower(motorInputs[0]);
             rfMotor.setPower(motorInputs[1]);
             lbMotor.setPower(motorInputs[2]);

@@ -6,22 +6,16 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.ToolClasses.ActuatorMap;
 import org.firstinspires.ftc.teamcode.ToolClasses.Constants;
 
-/**
- * Created by maxcr1 on 9/9/17.
- */
-
 public class ElevatorLift extends Subsystem{
 
 
-        Constants constants = new Constants();
-
         //Define Actuators as null
-        static DcMotor liftMotor;
+        private static DcMotor liftMotor;
 
         //Define variables
-        int selectedPos = 0;
-        boolean manualOverride = false;
-        int[] positions = {constants.firstPosition, constants.secondPosition, constants.thirdPosition, constants.fourthPosition};
+        private int selectedPos = 0;
+        private boolean manualOverride = false;
+        private int[] positions;
 
         //Constructor (put init things in here)
         public ElevatorLift(HardwareMap ahwMap){
@@ -30,12 +24,7 @@ public class ElevatorLift extends Subsystem{
 
             //Add actuators and sensors here
             liftMotor = hwMap.dcMotor.get(ActuatorMap.liftMotor);
-        }
-
-        public static void init(){
-
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
+            positions = new int[]{Constants.firstPosition, Constants.secondPosition, Constants.thirdPosition, Constants.fourthPosition};
         }
 
         public synchronized void liftPositions(boolean up, boolean down) {

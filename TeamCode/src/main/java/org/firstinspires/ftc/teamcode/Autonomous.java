@@ -53,8 +53,6 @@ public class Autonomous extends LinearOpMode {
 
         //Actual Autonomous Code Goes Here
 
-            //Turn Motor 90 Degrees assuming encoder exists
-
 
     }
 }
