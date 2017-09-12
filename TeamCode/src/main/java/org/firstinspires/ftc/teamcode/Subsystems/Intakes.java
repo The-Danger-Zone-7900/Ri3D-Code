@@ -12,7 +12,6 @@ public class Intakes extends Subsystem{
         private static DcMotor right;
 
         //Define variables
-        private boolean turningCube;
         //Constructor (put init things in here)
 
         public Intakes(HardwareMap hwMap){
@@ -22,31 +21,18 @@ public class Intakes extends Subsystem{
             right = hwMap.dcMotor.get(ActuatorMap.rightIntake);
             left.setDirection(DcMotor.Direction.REVERSE);
 
-            turningCube = false;
         }
 
-        public synchronized void turnCube(boolean cubeLeft, boolean cubeRight){
-            if(cubeLeft){
-                left.setPower(-1);
-                right.setPower(1);
-                turningCube = true;
-            }
-            else if (cubeRight){
-                left.setPower(1);
-                right.setPower(-1);
-                turningCube = true;
-            }
-            else{
-                left.setPower(0);
-                right.setPower(0);
-                turningCube = false;
-            }
-
-        }
-
-        public synchronized void intake(boolean in, boolean out){
-            if(!turningCube){
-                if(in){
+        public synchronized void intakes(boolean cubeLeft, boolean cubeRight,boolean in, boolean out){
+                if(cubeLeft){
+                    left.setPower(-1);
+                    right.setPower(1);
+                }
+                else if (cubeRight){
+                    left.setPower(1);
+                    right.setPower(-1);
+                }
+                else if(in){
                     left.setPower(-1);
                     right.setPower(-1);
                 }
@@ -58,8 +44,7 @@ public class Intakes extends Subsystem{
                     left.setPower(0);
                     right.setPower(0);
                 }
+
             }
+
         }
-
-
-}

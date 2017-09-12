@@ -13,9 +13,7 @@ public class ElevatorLift extends Subsystem{
         private static DcMotor liftMotor;
 
         //Define variables
-        private int selectedPos = 0;
-        private boolean manualOverride = false;
-        private int[] positions;
+        private int position;
 
         //Constructor (put init things in here)
         public ElevatorLift(HardwareMap ahwMap){
@@ -24,42 +22,25 @@ public class ElevatorLift extends Subsystem{
 
             //Add actuators and sensors here
             liftMotor = hwMap.dcMotor.get(ActuatorMap.liftMotor);
-            positions = new int[]{Constants.firstPosition, Constants.secondPosition, Constants.thirdPosition, Constants.fourthPosition};
         }
 
-        public synchronized void liftPositions(boolean up, boolean down) {
-            if (!manualOverride) {
-                    
-                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-                if (up) {
+        public synchronized void liftManual(boolean up, boolean down){
 
-                    selectedPos += 1;
+            if(up){
 
-                } else if (down) {
-
-                    selectedPos -= 1;
-
-                }
-
-                liftMotor.setTargetPosition(positions[selectedPos]);
-                liftMotor.setPower(.75);
+                liftMotor.setPower(1);
 
             }
-        }
 
-        public synchronized void liftManual(double amount){
+            else if(down){
 
-            if(-.1 > amount && .1 < amount){
-                    
-                liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                liftMotor.setPower(amount);
-                manualOverride = true;
+                liftMotor.setPower(-1);
 
             }
 
             else{
-                manualOverride = false;
+                liftMotor.setPower(0);
             }
 
         }

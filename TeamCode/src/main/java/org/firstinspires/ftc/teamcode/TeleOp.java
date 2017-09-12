@@ -33,9 +33,13 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.ElevatorLift;
 import org.firstinspires.ftc.teamcode.Subsystems.Intakes;
+import org.firstinspires.ftc.teamcode.ToolClasses.ActuatorMap;
 import org.firstinspires.ftc.teamcode.ToolClasses.Controls;
 
 
@@ -44,21 +48,24 @@ public class TeleOp extends OpMode{
 
     /* Declare OpMode members. */
     Robot robot = new Robot(hardwareMap);
-    private Controls controls = new Controls(gamepad1, gamepad2);
-    private DriveTrain drive = new DriveTrain(hardwareMap);
-    private Intakes intakes = new Intakes(hardwareMap);
-    private ElevatorLift elevatorLift = new ElevatorLift(hardwareMap);
+    private Controls controls;
+    private DriveTrain drive;
+    private Intakes intakes;
+    private ElevatorLift elevatorLift;
 
 
 
 
     @Override
     public void init() {
-
+        elevatorLift = new ElevatorLift(hardwareMap);
+        intakes  = new Intakes(hardwareMap);
+        controls = new Controls(gamepad1, gamepad2);
+        drive = new DriveTrain(hardwareMap);
         telemetry.addData("Say", "Initializing");
 
         //Put init functions here
-        drive.init();
+      //  drive.init();
 
         telemetry.addData("Say", "Initializing Complete");
 
@@ -89,11 +96,9 @@ public class TeleOp extends OpMode{
     public void loop() {
 
         drive.mechDrive(controls.strafe(), controls.forward(), controls.rotation());
-        intakes.turnCube(controls.turnCubeLeft(), controls.turnCubeRight());
-        intakes.intake(controls.intakeIn(), controls.intakeOut());
-        elevatorLift.liftManual(controls.manualLift());
-        elevatorLift.liftPositions(controls.liftUp(), controls.liftDown());
-        telemetry.addData("Stick", controls.forward());
+        //drive.mechDrive(controls.strafe(), controls.forward(), controls.rotation());
+        intakes.intakes(controls.turnCubeLeft(), controls.turnCubeRight(), controls.intakeIn(), controls.intakeOut());
+        elevatorLift.liftManual(controls.liftUp(), controls.liftDown());
 
         robot.waitForTick(10);
     }
