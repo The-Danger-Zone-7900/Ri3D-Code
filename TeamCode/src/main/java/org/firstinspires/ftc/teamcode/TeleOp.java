@@ -86,7 +86,6 @@ public class TeleOp extends OpMode{
 
         //This really doesn't serve any purpose
         telemetry.addData("Say", "Start!");
-
     }
 
     /*
@@ -99,6 +98,8 @@ public class TeleOp extends OpMode{
         //drive.mechDrive(controls.strafe(), controls.forward(), controls.rotation());
         intakes.intakes(controls.turnCubeLeft(), controls.turnCubeRight(), controls.intakeIn(), controls.intakeOut());
         elevatorLift.liftManual(controls.liftUp(), controls.liftDown());
+
+
 
         robot.waitForTick(10);
     }

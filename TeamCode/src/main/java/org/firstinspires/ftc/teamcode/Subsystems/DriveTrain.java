@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode.Subsystems;
 
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.HardwareMap;
+import com.qualcomm.robotcore.hardware.Servo;
 
 import org.firstinspires.ftc.robotcore.external.Telemetry;
 import org.firstinspires.ftc.teamcode.ToolClasses.ActuatorMap;
@@ -15,6 +16,7 @@ public class DriveTrain extends Subsystem{
         private static DcMotor lbMotor = null;
         private static DcMotor rfMotor = null;
         private static DcMotor rbMotor = null;
+        private static Servo tail = null;
         //Define variables
 
     //Constructor (put init things in here)
@@ -28,6 +30,7 @@ public class DriveTrain extends Subsystem{
             lbMotor = ahwMap.dcMotor.get(ActuatorMap.lbMotor);
             rfMotor = ahwMap.dcMotor.get(ActuatorMap.rfMotor);
             rbMotor = ahwMap.dcMotor.get(ActuatorMap.rbMotor);
+            tail = ahwMap.servo.get(ActuatorMap.tail);
             rbMotor.setDirection(DcMotor.Direction.REVERSE);
             rfMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -38,6 +41,10 @@ public class DriveTrain extends Subsystem{
 
 
 
+        }
+
+        public synchronized void setTailPos(double pos){
+            tail.setPosition(pos);
         }
 
         public synchronized  void runAllWheels(){

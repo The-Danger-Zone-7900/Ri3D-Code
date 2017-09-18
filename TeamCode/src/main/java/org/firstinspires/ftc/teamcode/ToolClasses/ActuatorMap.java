@@ -22,4 +22,5 @@ public class ActuatorMap {
         public static final String leftIntake = "leftIntake";
         public static final String rightIntake = "rightIntake";
 
+        public static final String tail = "tail";
 }
