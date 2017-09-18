@@ -34,6 +34,9 @@ public class DriveTrain extends Subsystem{
             rbMotor.setDirection(DcMotor.Direction.REVERSE);
             rfMotor.setDirection(DcMotor.Direction.REVERSE);
 
+=======
+            tail = hwMap.servo.get(ActuatorMap.tail);
+>>>>>>> Stashed changes
 
         }
 
@@ -68,6 +71,21 @@ public class DriveTrain extends Subsystem{
             rfMotor.setPower(motorInputs[1]);
             lbMotor.setPower(motorInputs[2]);
             rbMotor.setPower(motorInputs[3]);
+
+        }
+
+        public synchronized void driveAuto(double direction, int distance){
+
+            lfMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rfMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            rbMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+            lbMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+
+
+
+
+
 
         }
 

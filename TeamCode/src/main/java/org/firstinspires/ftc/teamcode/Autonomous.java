@@ -43,10 +43,11 @@ import org.firstinspires.ftc.teamcode.ToolClasses.Constants;
 public class Autonomous extends LinearOpMode {
 
     /* Declare OpMode members. */
-    Robot robot;
-    DriveTrain drive;
-    ElapsedTime runtime;
     Intakes intakes;
+    ElapsedTime runtime;
+    DriveTrain drive;
+    Robot robot;
+
 
     @Override
     public void runOpMode(){
