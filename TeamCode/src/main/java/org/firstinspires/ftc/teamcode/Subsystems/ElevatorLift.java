@@ -6,22 +6,14 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import org.firstinspires.ftc.teamcode.ToolClasses.ActuatorMap;
 import org.firstinspires.ftc.teamcode.ToolClasses.Constants;
 
-/**
- * Created by maxcr1 on 9/9/17.
- */
-
 public class ElevatorLift extends Subsystem{
 
 
-        Constants constants = new Constants();
-
         //Define Actuators as null
-        static DcMotor liftMotor;
+        private static DcMotor liftMotor;
 
         //Define variables
-        int selectedPos = 0;
-        boolean manualOverride = false;
-        int[] positions = {constants.firstPosition, constants.secondPosition, constants.thirdPosition, constants.fourthPosition};
+        private int position;
 
         //Constructor (put init things in here)
         public ElevatorLift(HardwareMap ahwMap){
@@ -32,45 +24,23 @@ public class ElevatorLift extends Subsystem{
             liftMotor = hwMap.dcMotor.get(ActuatorMap.liftMotor);
         }
 
-        public static void init(){
 
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        public synchronized void liftManual(boolean up, boolean down){
 
-        }
+            if(up){
 
-        public synchronized void liftPositions(boolean up, boolean down) {
-            if (!manualOverride) {
-                    
-                liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-
-                if (up) {
-
-                    selectedPos += 1;
-
-                } else if (down) {
-
-                    selectedPos -= 1;
-
-                }
-
-                liftMotor.setTargetPosition(positions[selectedPos]);
-                liftMotor.setPower(.75);
+                liftMotor.setPower(1);
 
             }
-        }
 
-        public synchronized void liftManual(double amount){
+            else if(down){
 
-            if(-.1 > amount && .1 < amount){
-                    
-                liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-                liftMotor.setPower(amount);
-                manualOverride = true;
+                liftMotor.setPower(-1);
 
             }
 
             else{
-                manualOverride = false;
+                liftMotor.setPower(0);
             }
 
         }

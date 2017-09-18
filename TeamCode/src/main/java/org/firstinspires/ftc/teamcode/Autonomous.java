@@ -33,28 +33,48 @@ THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
+import org.firstinspires.ftc.teamcode.Subsystems.Intakes;
 import org.firstinspires.ftc.teamcode.ToolClasses.Constants;
 
 @com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Sample Auto")
 public class Autonomous extends LinearOpMode {
 
     /* Declare OpMode members. */
-    Robot robot = new Robot(hardwareMap);
+    Robot robot;
+    DriveTrain drive;
+    ElapsedTime runtime;
+    Intakes intakes;
 
     @Override
     public void runOpMode(){
 
         //Initialization Stuff Goes Here.
-
+        robot = new Robot(hardwareMap);
+        drive = new DriveTrain(hardwareMap);
+        intakes = new Intakes(hardwareMap);
+        runtime  = new ElapsedTime();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
         //Actual Autonomous Code Goes Here
+        runtime.reset();
+        while(opModeIsActive()) {
+            if(runtime.milliseconds() < 2001) {
+                drive.mechDrive(0, 1, 0);
+            }
+            if(runtime.milliseconds() > 2501 && runtime.milliseconds() < 3501) {
+                drive.mechDrive(0, -1, 0);
+                intakes.intakes(false, false, false, true);
+            }
+            if(runtime.milliseconds() > 3501 && runtime.milliseconds() < 4251) {
+                intakes.intakes(false, false, false, false);
+                drive.mechDrive(0, 0, -1);
+            }
 
-            //Turn Motor 90 Degrees assuming encoder exists
-
-
+        }
     }
 }

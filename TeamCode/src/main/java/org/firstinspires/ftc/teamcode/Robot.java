@@ -6,6 +6,9 @@ import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.Telemetry;
+import org.firstinspires.ftc.teamcode.ToolClasses.Controls;
+
 public class Robot {
 
     /* local OpMode members. */
@@ -26,6 +29,11 @@ public class Robot {
 
         //Skeletal remains of the pre-Max DeVos days.
         //Don't use this.
+
+    }
+
+    public void controllerTelemetry(){
+
 
     }
 

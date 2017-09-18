@@ -1,121 +1,66 @@
-## TeamCode Module
+#KING TeC 2169 FTC Framework
 
-Welcome!
+This framework provides a modular and clean solution to FTC Programming in Java.
+This framework contains various systems, but in short, the system is laid out with 4 main
+organization components.
 
-This module, TeamCode, is the place where you will write/paste the code for your team's
-robot controller App. This module is currently empty (a clean slate) but the
-process for adding OpModes is straightforward.
+#Programming Guide
+**Subsystems:** Subsystems are the control schemes for the mechanisms of your robot.  Each
+mechanism will have a subsystem attached to it.  For example, if you had a robot with a Tank Drive
+and an Arm, you would have two subsystems; and Arm subsytem and a DriveTrain subsystem.  
+The subsystem for the Arm would contain the instructions on handling moving it up and down,
+and encoder positions.  The methods will be entered as 
 
-## Creating your own OpModes
+`public syncronized void <methodname> (<parameters>)`
 
-The easiest way to create your own OpMode is to copy a Sample OpMode and make it your own.
+To make a new subsystem, copy the empty subsystem and add your own methods and actuators.
+For help with what goes where, refer to the SampleSubsystem.
 
-Sample opmodes exist in the FtcRobotController module.
-To locate these samples, find the FtcRobotController module in the "Project/Android" tab.
+**Controls:**  In order to easily and quickly modify and establish controls, the Controls class 
+is for getters and setters of the controllers.  This way, you can easily switch controls and the
+subsystems can be programmed to work with multiple modes and using multiple configurations 
+that can be easily toggled.
 
-Expand the following tree elements:
- FtcRobotController / java / org.firstinspires.ftc.robotcontroller / external / samples
+Once inside the pre-configured Controls class, to create a new control, use this format;
 
-A range of different samples classes can be seen in this folder.
-The class names follow a naming convention which indicates the purpose of each class.
-The full description of this convention is found in the samples/sample_convention.md file.
+_Buttons_
 
-A brief synopsis of the naming convention is given here:
-The prefix of the name will be one of the following:
+`public boolean <controlName>(){`
 
-* Template: This is a minimally functional OpMode used to illustrate the skeleton/structure
-            of a particular style of OpMode.  These are bare bones examples.
-* Sensor:   This is a Sample OpMode that shows how to use a specific sensor.
-            It is not intended as a functioning robot, it is simply showing the minimal code
-            required to read and display the sensor values.
-* Hardware: This is not an actual OpMode, but a helper class that is used to describe
-            one particular robot's hardware devices: eg: for a Pushbot.  Look at any
-            Pushbot sample to see how this can be used in an OpMode.
-            Teams can copy one of these to create their own robot definition.
-* Pushbot:  This is a Sample OpMode that uses the Pushbot robot structure as a base.
-* Concept:	This is a sample OpMode that illustrates performing a specific function or concept.
-            These may be complex, but their operation should be explained clearly in the comments,
-            or the header should reference an external doc, guide or tutorial.
-* Library:  This is a class, or set of classes used to implement some strategy.
-            These will typically NOT implement a full OpMode.  Instead they will be included
-            by an OpMode to provide some stand-alone capability.
+`return gamepad<1/2>.<button>; }`
 
-Once you are familiar with the range of samples available, you can choose one to be the
-basis for your own robot.  In all cases, the desired sample(s) needs to be copied into
-your team's module to be used.
+_Sticks_
 
-This is done inside Android Studio directly, using the following steps:
+`public double <controlName>(){`
 
- 1) Locate the desired sample class in the Project/Android tree.
+`return gamepad<1/2>.<stick / axis>; }`
 
- 2) Right click on the sample class and select "Copy"
 
- 3) Expand the  TeamCode / java folder
+To use these controls in your TeleOp class, make an instance of Controls, and then use, for example;
 
- 4) Right click on the org.firstinspires.ftc.teamcode folder and select "Paste"
-
- 5) You will be prompted for a class name for the copy.
-    Choose something meaningful based on the purpose of this class.
-    Start with a capital letter, and remember that there may be more similar classes later.
-
-Once your copy has been created, you should prepare it for use on your robot.
-This is done by adjusting the OpMode's name, and enabling it to be displayed on the
-Driver Station's OpMode list.
-
-Each OpMode sample class begins with several lines of code like the ones shown below:
-
-```
- @TeleOp(name="Template: Linear OpMode", group="Linear Opmode")
- @Disabled
-```
-
-The name that will appear on the driver station's "opmode list" is defined by the code:
- ``name="Template: Linear OpMode"``
-You can change what appears between the quotes to better describe your opmode.
-The "group=" portion of the code can be used to help organize your list of OpModes.
-
-As shown, the current OpMode will NOT appear on the driver station's OpMode list because of the
-  ``@Disabled`` annotation which has been included.
-This line can simply be deleted , or commented out, to make the OpMode visible.
+`telemetry.addData("Stick", controls.forward());`
 
 
 
-## ADVANCED Multi-Team App management:  Cloning the TeamCode Module
+**AcutatorMap:** The ActuatorMap is intended for storing the names of all actuators and sensors 
+in one place for quick and easy changing and debugging.  This step is optional, but will make
+configuring the phones and debugging errors at comp much easier.
 
-In some situations, you have multiple teams in your club and you want them to all share
-a common code organization, with each being able to *see* the others code but each having
-their own team module with their own code that they maintain themselves.
+To use it, create the String within the ActuatorMap class, and then call it when creating the actuator
+object within the class.
 
-In this situation, you might wish to clone the TeamCode module, once for each of these teams.
-Each of the clones would then appear along side each other in the Android Studio module list,
-together with the FtcRobotController module (and the original TeamCode module).
+So within the ActuatorMap, define the motorName like this;
+`public static final String liftMotor = "lift";`
 
-Selective Team phones can then be programmed by selecting the desired Module from the pulldown list
-prior to clicking to the green Run arrow.
+and within the Subsystem, create the motor object, 
+and then inside the constructor, put this;
+`liftMotor = hwMap.dcMotor.get(ActuatorMap.liftMotor);`
 
-Warning:  This is not for the inexperienced Software developer.
-You will need to be comfortable with File manipulations and managing Android Studio Modules.
-These changes are performed OUTSIDE of Android Studios, so close Android Studios before you do this.
- 
-Also.. Make a full project backup before you start this :)
+Now, whenever you change the name in ActuatorMap, it changes it everywhere that motor is called.
 
-To clone TeamCode, do the following:
+**Constants:**  Constants is pretty self-explanatory; it's a class that works across the entire
+programming project to allow you to call the same number and modify it across the entire code structure 
+with only a few keystrokes in a single class.  Things you might put in constants include; encoder clicks,
+distances, measurements, rotation information, etc.
 
-Note: Some names start with "Team" and others start with "team".  This is intentional.
-
-1)  Using your operating system file management tools, copy the whole "TeamCode"
-    folder to a sibling folder with a corresponding new name, eg: "Team0417".
-
-2)  In the new Team0417 folder, delete the TeamCode.iml file.
-
-3)  the new Team0417 folder, rename the "src/main/java/org/firstinspires/ftc/teamcode" folder
-    to a matching name with a lowercase 'team' eg:  "team0417".
-
-4)  In the new Team0417/src/main folder, edit the "AndroidManifest.xml" file, change the line that contains
-         package="org.firstinspires.ftc.teamcode"
-    to be
-         package="org.firstinspires.ftc.team0417"
-
-5)  Add:    include ':Team0417' to the "/settings.gradle" file.
-    
-6)  Open up Android Studios and clean out any old files by using the menu to "Build/Clean Project""
+This system also has a PID class built in as of right now, and OpenCV will be built in soon.

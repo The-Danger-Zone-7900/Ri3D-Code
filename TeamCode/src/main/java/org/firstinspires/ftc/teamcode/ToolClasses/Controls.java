@@ -10,13 +10,13 @@ import com.qualcomm.robotcore.hardware.Gamepad;
 
 public class Controls{
 
-    public Gamepad gamepad1;
-    public Gamepad gamepad2;
+    Gamepad gamepad1;
+    Gamepad gamepad2;
 
     public Controls(Gamepad g1, Gamepad g2){
 
-        Gamepad gamepad1 = g1;
-        Gamepad gamepad2 = g2;
+        gamepad1 = g1;
+        gamepad2 = g2;
 
     }
     //Pxxx = Primary xxx
@@ -28,7 +28,7 @@ public class Controls{
 
 
     public double forward() {
-        return gamepad1.left_stick_y;
+        return -gamepad1.left_stick_y;
     }
 
     public double strafe() {
@@ -52,16 +52,15 @@ public class Controls{
         }
     }
     public boolean turnCubeLeft(){
-        return gamepad1.left_bumper;
+        return gamepad2.left_bumper;
     }
 
     public boolean turnCubeRight(){
-        return gamepad1.right_bumper;
+        return gamepad2.right_bumper;
     }
     public boolean liftUp(){
         return gamepad2.y;
     }
-
     public boolean liftDown(){
         return gamepad2.a;
     }
