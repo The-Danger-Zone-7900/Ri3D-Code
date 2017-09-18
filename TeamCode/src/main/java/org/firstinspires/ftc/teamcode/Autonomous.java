@@ -35,11 +35,24 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
+import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.matrices.OpenGLMatrix;
+import org.firstinspires.ftc.robotcore.external.matrices.VectorF;
+import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
+import org.firstinspires.ftc.robotcore.external.navigation.AxesReference;
+import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
+import org.firstinspires.ftc.robotcore.external.navigation.RelicRecoveryVuMark;
+import org.firstinspires.ftc.robotcore.external.navigation.VuMarkInstanceId;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaLocalizer;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackable;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackableDefaultListener;
+import org.firstinspires.ftc.robotcore.external.navigation.VuforiaTrackables;
 import org.firstinspires.ftc.teamcode.Subsystems.DriveTrain;
 import org.firstinspires.ftc.teamcode.Subsystems.Intakes;
 import org.firstinspires.ftc.teamcode.ToolClasses.Constants;
 
-@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Sample Auto")
+@com.qualcomm.robotcore.eventloop.opmode.Autonomous(name="Vision Auto")
 public class Autonomous extends LinearOpMode {
 
     /* Declare OpMode members. */
@@ -47,35 +60,84 @@ public class Autonomous extends LinearOpMode {
     ElapsedTime runtime;
     DriveTrain drive;
     Robot robot;
+    VuforiaLocalizer vuforia;
 
 
     @Override
-    public void runOpMode(){
+    public void runOpMode() {
 
         //Initialization Stuff Goes Here.
         robot = new Robot(hardwareMap);
         drive = new DriveTrain(hardwareMap);
         intakes = new Intakes(hardwareMap);
-        runtime  = new ElapsedTime();
+        runtime = new ElapsedTime();
 
         // Wait for the game to start (driver presses PLAY)
+
+
+        int cameraMonitorViewId = hardwareMap.appContext.getResources().getIdentifier("cameraMonitorViewId", "id", hardwareMap.appContext.getPackageName());
+        VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters(cameraMonitorViewId);
+
+        parameters.vuforiaLicenseKey = "ATsODcD/////AAAAAVw2lR...d45oGpdljdOh5LuFB9nDNfckoxb8COxKSFX";
+
+        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.FRONT;
+        this.vuforia = ClassFactory.createVuforiaLocalizer(parameters);
+
+        VuforiaTrackables relicTrackables = this.vuforia.loadTrackablesFromAsset("RelicVuMark");
+        VuforiaTrackable relicTemplate = relicTrackables.get(0);
+        relicTemplate.setName("relicVuMarkTemplate"); // can help in debugging; otherwise not necessary
+
         waitForStart();
 
-        //Actual Autonomous Code Goes Here
-        runtime.reset();
-        while(opModeIsActive()) {
-            if(runtime.milliseconds() < 2001) {
-                drive.mechDrive(0, 1, 0);
-            }
-            if(runtime.milliseconds() > 2501 && runtime.milliseconds() < 3501) {
-                drive.mechDrive(0, -1, 0);
-                intakes.intakes(false, false, false, true);
-            }
-            if(runtime.milliseconds() > 3501 && runtime.milliseconds() < 4251) {
-                intakes.intakes(false, false, false, false);
-                drive.mechDrive(0, 0, -1);
-            }
+        relicTrackables.activate();
+        while (opModeIsActive()) {
 
+            RelicRecoveryVuMark vuMark = RelicRecoveryVuMark.from(relicTemplate);
+
+            if (vuMark != RelicRecoveryVuMark.UNKNOWN) {
+
+                if (vuMark == RelicRecoveryVuMark.LEFT) {
+
+                    telemetry.addData("Vision Target Spotted", "Left");
+
+                } else if (vuMark == RelicRecoveryVuMark.CENTER) {
+
+                    telemetry.addData("Vision Target Spotted", "Center");
+
+                } else if (vuMark == RelicRecoveryVuMark.RIGHT) {
+
+                    telemetry.addData("Vision Target Spotted", "Right");
+
+                }
+
+                OpenGLMatrix pose = ((VuforiaTrackableDefaultListener) relicTemplate.getListener()).getPose();
+                telemetry.addData("Pose", format(pose));
+
+                /* We further illustrate how to decompose the pose into useful rotational and
+                 * translational components */
+                if (pose != null) {
+                    VectorF trans = pose.getTranslation();
+                    Orientation rot = Orientation.getOrientation(pose, AxesReference.EXTRINSIC, AxesOrder.XYZ, AngleUnit.DEGREES);
+
+                    // Extract the X, Y, and Z components of the offset of the target relative to the robot
+                    double tX = trans.get(0);
+                    double tY = trans.get(1);
+                    double tZ = trans.get(2);
+
+                    // Extract the rotational components of the target relative to the robot
+                    double rX = rot.firstAngle;
+                    double rY = rot.secondAngle;
+                    double rZ = rot.thirdAngle;
+
+
+                } else {
+                    telemetry.addData("Vision Target Spotted", "None");
+                }
+            }
         }
+    }
+
+    String format(OpenGLMatrix transformationMatrix) {
+        return (transformationMatrix != null) ? transformationMatrix.formatAsTransform() : "null";
     }
 }

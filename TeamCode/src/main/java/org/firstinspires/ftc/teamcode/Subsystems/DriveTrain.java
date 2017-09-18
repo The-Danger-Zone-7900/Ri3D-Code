@@ -34,9 +34,7 @@ public class DriveTrain extends Subsystem{
             rbMotor.setDirection(DcMotor.Direction.REVERSE);
             rfMotor.setDirection(DcMotor.Direction.REVERSE);
 
-=======
             tail = hwMap.servo.get(ActuatorMap.tail);
->>>>>>> Stashed changes
 
         }
 
